@@ -1,0 +1,72 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    var get_bikes_list_url = "{{=URL('search', 'get_bikes')}}";
+</script>
+{{end}}
+
+<div class="main_content">
+
+    <div id="vue-search" class="display:none">
+        <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
+
+        <!-- First, let's add a form to insert blog posts. -->
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">BYKR</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/bykr">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="input-group mb-3">
+          <input id="searchInput" ref="searchInput" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" v-on:click="search()">Search</button>
+          </div>
+        </div>
+
+        <script type="text/javascript">
+            function get_search_query(){
+              return document.getElementById('searchInput').value;
+            }
+        </script>
+
+        <div v-if="search_list.length === 0">There are no bikes.</div>
+
+        <!-- We display the posts. -->
+        <div class="card-deck">
+        <div class="post_div" v-for="bike in search_list">
+            <div class="card" style="width: 16rem; height: 100%">
+              <img class="card-img-top" v-bind:src="bike.bike_img_url" alt="Card image cap">
+                <div class="card-body">
+                  <h1 class="card-title">${bike.bike_brand}</h1>
+                  <h5 class="card-title">${bike.bike_name}</h5>
+                  <p class="card-text">${bike.bike_desc}</p>
+                </div>
+              <div class="card-footer">
+                  <a href="#" class="btn btn-secondary">View</a>
+                  <a href="#" class="btn btn-primary">Review</a>
+             </div>
+           </div>
+      </div>
+</div>
+
+
+      </div>
+</div>
+<script src="{{=URL('static', 'js/default_search.js')}}"></script>
