@@ -7,6 +7,12 @@
 # ---- example index page ----
 def index():
     response.flash = T("Hello World")
+    if request.vars.results:
+        session.results= request.vars.results
+        redirect(URL('search'))
+    return dict(message=T('Welcome to web2py!'))
+
+def search():
     return dict(message=T('Welcome to web2py!'))
 
 # ---- API (example) -----
@@ -27,7 +33,7 @@ def grid():
 # ---- Embedded wiki (example) ----
 def wiki():
     auth.wikimenu() # add the wiki to the menu
-    return auth.wiki() 
+    return auth.wiki()
 
 # ---- Action for login/register/etc (required for auth) -----
 def user():

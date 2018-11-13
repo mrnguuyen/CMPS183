@@ -17,9 +17,8 @@ var app = function() {
         );
     };
 
-    self.search = function(str) {
-        alert(str);
-        var query = str;
+    self.search = function() {
+        var query = this.$refs.searchInput.value.toLowerCase();
         search_list = [];
         self.vue.bikes_list.forEach(function(element) {
             if(element.bike_name.toLowerCase().includes(query)) {
