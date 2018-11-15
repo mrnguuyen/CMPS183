@@ -4,12 +4,14 @@
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
     var get_bikes_list_url = "{{=URL('search', 'get_bikes')}}";
+    var result = "{{=request.vars.results}}";
 </script>
 {{end}}
 
 <div class="main_content">
 
     <div id="vue-search" class="display:none">
+        <vue-search result="{{=request.vars.results}}"></vue-seach>
         <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
 
         <!-- First, let's add a form to insert blog posts. -->
@@ -32,20 +34,11 @@
                 </ul>
             </div>
         </nav>
-        <div class="input-group mb-3">
-          <input id="searchInput" ref="searchInput" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" v-on:click="search()">Search</button>
-          </div>
-        </div>
+        <form action="{{=URL('search')}}">
+          <input name="results" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
+        </form>
 
-        <script type="text/javascript">
-            function get_search_query(){
-              return document.getElementById('searchInput').value;
-            }
-        </script>
-
-        <div v-if="search_list.length === 0">There are no bikes.</div>
+        <div v-if="search_list == 0">{{=request.vars.results}} was not found</div>
 
         <!-- We display the posts. -->
         <div class="card-deck">

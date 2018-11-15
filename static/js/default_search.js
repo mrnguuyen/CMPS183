@@ -7,53 +7,42 @@ var app = function() {
 
     var enumerate = function(v) { var k=0; return v.map(function(e) {e._idx = k++;});};
 
+    self.search = function() {
+      search_list = [];
 
-    self.get_bikes = function() {
-        $.getJSON(get_bikes_list_url,
-            function(data) {
-                self.vue.bikes_list = data.bikes_list;
-                self.process_bikes();
-            }
-        );
-    };
+      $.getJSON(get_bikes_list_url,
+          function(data) {
+            data.bikes_list.forEach(function(element) {
 
-    self.search = function(str) {
-        alert(str);
-        var query = str;
-        search_list = [];
-        self.vue.bikes_list.forEach(function(element) {
-            if(element.bike_name.toLowerCase().includes(query)) {
-               search_list.push(element);
-            }
-            if(element.bike_brand.toLowerCase().includes(query)) {
-               search_list.push(element);
-            }
-        });
-        self.vue.search_list = search_list;
+                if(element.bike_name.toLowerCase().includes(this.result.toLowerCase())) {
+                   search_list.push(element);
+                }
+                if(element.bike_brand.toLowerCase().includes(this.result.toLowerCase())) {
+                   search_list.push(element);
+                }
+            });
+          }
+      );
+      return search_list;
     };
 
     self.process_bikes = function() {
         enumerate(self.vue.bikes_list);
-        self.vue.post_list.map(function (e) {
-        });
     };
 
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-search",
         delimiters: ['${', '}'],
+        props: ['result'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            bikes_list: [],
-            search_list: [],
+            search_list: self.search(this.result)
         },
         methods: {
-            get_bikes: self.get_bikes,
             search: self.search
         }
     });
-
-    self.get_bikes();
 
     return self;
 };
