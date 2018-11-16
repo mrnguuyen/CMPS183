@@ -1,0 +1,19 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    var get_bikes_list_url = "{{=URL('search', 'get_bikes')}}";
+    var result = "{{=request.vars.results}}";
+</script>
+{{end}}
+
+<div class="main_content">
+
+        <div id="vue-div" class="display:none">
+
+        </div>
+
+</div>
+
+<script src="{{=URL('static', 'js/default_search.js')}}"></script>
