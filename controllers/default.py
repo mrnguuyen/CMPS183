@@ -6,13 +6,19 @@
 
 # ---- example index page ----
 def index():
-    response.flash = T("Hello World")
     if request.vars.results:
         session.results= request.vars.results
         redirect(URL('search'))
     return dict(message=T('Welcome to web2py!'))
 
 def search():
+    # bike = db.bike(request.args(0, cast=int))
+    if request.vars.bike_review:
+        session.results= request.vars.bike_review
+        redirect(URL('review'))
+    return dict(message=T('Welcome to web2py!'))
+
+def review():
     return dict(message=T('Welcome to web2py!'))
 
 # ---- API (example) -----

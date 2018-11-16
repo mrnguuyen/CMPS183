@@ -5,3 +5,10 @@ db.define_table('bike',
                 Field('Description'),
                 Field('ImageURL')
                 )
+
+db.define_table('review',
+                Field('title'),
+                Field('content', 'text'),
+                Field('bike_id', 'reference bike')
+                )
+
