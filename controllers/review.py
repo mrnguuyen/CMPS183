@@ -1,18 +1,13 @@
-def index():
-    context = dict(message=T(request.vars['results']))
-    return response.render('review.html', context)
 
-# def get_bikes():
-
-#     results = []
-#     rows = db().select(db.bike.ALL)
-#     for row in rows:
-#         results.append(dict(
-#             bike_id = row.id,
-#             bike_brand = row.Brand,
-#             bike_name = row.Name,
-#             bike_desc = row.Description,
-#             bike_img_url = row.ImageURL
-#         ))
-
-#     return response.json(dict(bikes_list=results))
+def get_bike():
+    bike_id = int(request.vars.bike_id)
+    # row = db().select(db.bike.id == bike_id)
+    for row in db(db.bike.id == bike_id).select():
+        result = dict(
+            bike_id = row.id,
+            bike_brand = row.Brand,
+            bike_name = row.Name,
+            bike_desc = row.Description,
+            bike_img_url = row.ImageURL
+        )
+    return response.json(dict(bike=result))

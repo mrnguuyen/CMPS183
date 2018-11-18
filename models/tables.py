@@ -8,7 +8,8 @@ db.define_table('bike',
 
 db.define_table('review',
                 Field('title'),
-                Field('content', 'text'),
+                Field('body', 'text'),
+                Field('username'),
                 Field('bike_id', 'reference bike')
                 )
 

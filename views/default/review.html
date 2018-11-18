@@ -3,12 +3,14 @@
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
-    var get_bikes_list_url = "{{=URL('search', 'get_bikes')}}";
-    var result = "{{=request.vars.results}}";
+    var id = "{{=request.vars.id}}";
+    var get_bike_url = "{{=URL('review', 'get_bike')}}";
 </script>
 {{end}}
 
 <div class="main_content">
+    <div id="vue-review">
+        <vue-review id="{{=request.vars.id}}"></vue-review>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <a class="navbar-brand" href="#">BYKR</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -27,11 +29,45 @@
                     </ul>
                 </div>
         </nav>
-
-        <div id="vue-div" class="display:none">
-            Hello
+        <div class="container">
+            <div v-if="bike">
+                <h1>${bike._brand}</h1>
+                <h1>${bike._name}</h1>
+                <p><i>${bike._desc}</i></p>
+                <img v-bind:src="bike._img">
+            </div>
         </div>
-
+        <hr />
+        <!--Reivews go down here-->
+        <div class="container">
+            Reviews down here
+        </div>
+    </div>
 </div>
 
-<script src="{{=URL('static', 'js/default_search.js')}}"></script>
+<style>
+
+    h1 {
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+
+    hr {
+        border-color: black;
+        color: black;
+        background-color: black;
+        height: 1px;
+    }
+</style>
+
+<script src="{{=URL('static', 'js/default_review.js')}}"></script>

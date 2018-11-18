@@ -11,7 +11,7 @@
 <div class="main_content">
 
     <div id="vue-search" class="display:none">
-        <vue-search result="{{=request.vars.results}}"></vue-seach>
+        <vue-search result="{{=request.vars.results}}"></vue-search>
         <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
 
         <!-- First, let's add a form to insert blog posts. -->
@@ -51,10 +51,15 @@
                   <p class="card-text">${bike.bike_desc}</p>
                 </div>
               <div class="card-footer">
-                  <a href="review" class="btn btn-primary">Review</a>
+                  <!-- Pass data into review page with the bike id -->
+                  <!-- <a :href="`review/${bike.bike_id}`" class="btn btn-primary">Review</a> UPDATE: DIS IS WRONG --> 
+
+                  <form action="{{=URL('review')}}">
+                        <button name="id" v-model="bike.bike_id" class="btn btn-primary">Review</button>
+                  </form>
              </div>
            </div>
-      </div>
+      </div> <!--end v-for-->
 </div>
 
 

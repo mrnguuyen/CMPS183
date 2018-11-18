@@ -8,54 +8,42 @@ var app = function() {
     var enumerate = function(v) { var k=0; return v.map(function(e) {e._idx = k++;});};
 
 
-    self.get_bikes = function() {
-        $.getJSON(get_bikes_list_url,
-            function(data) {
-                self.vue.bikes_list = data.bikes_list;
-                self.process_bikes();
+    self.get_bike = function(id) {
+        // var id = self.vue.bike_id;
+        console.log("bike id check " + id);
+        $.post(get_bike_url, {
+            //send bike_id to backend
+            bike_id: id
+        }, function(data) {
+                console.log(data.bike);
+                self.vue.bike = data.bike;
+                Vue.set(self.vue.bike, '_name', data.bike.bike_name);
+                Vue.set(self.vue.bike, '_brand', data.bike.bike_brand);
+                Vue.set(self.vue.bike, '_desc', data.bike.bike_desc);
+                Vue.set(self.vue.bike, '_img', data.bike.bike_img_url);
             }
         );
     };
 
-    self.search = function() {
-        var query = this.$refs.searchInput.value.toLowerCase();
-        search_list = [];
-        self.vue.bikes_list.forEach(function(element) {
-            if(element.bike_name.toLowerCase().includes(query)) {
-               search_list.push(element);
-            }
-            if(element.bike_brand.toLowerCase().includes(query)) {
-               search_list.push(element);
-            }
-        });
-        self.vue.search_list = search_list;
-    };
-
-    self.process_bikes = function() {
-        enumerate(self.vue.bikes_list);
-        self.vue.post_list.map(function (e) {
-        });
-    };
-
     // Complete as needed.
     self.vue = new Vue({
-        el: "#vue-search",
+        el: "#vue-review",
         delimiters: ['${', '}'],
+        props: ['id'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            bikes_list: [],
-            search_list: [],
+            bike: {},
         },
         methods: {
-            get_bikes: self.get_bikes,
-            search: self.search
+            get_bike: self.get_bike,
         }
     });
 
-    self.get_bikes();
+    self.get_bike(this.id);
 
     return self;
 };
+
 
 var APP = null;
 

@@ -3,11 +3,7 @@
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
-    var add_post_url = "{{=URL('api', 'add_post', user_signature=True)}}";
-    var get_post_list_url = "{{=URL('api', 'get_post_list')}}";
     // Like callbacks.
-    var set_thumb_url = "{{=URL('api', 'set_thumb', user_signature=True)}}";
-    var get_thumb_state_list_url = "{{=URL('api', 'get_thumb_state_list')}}";
     var is_logged_in = {{='false' if auth.user is None else 'true'}};
 
 </script>

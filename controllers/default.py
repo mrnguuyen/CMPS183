@@ -11,15 +11,17 @@ def index():
         redirect(URL('search'))
     return dict(message=T('Welcome to web2py!'))
 
+
 def search():
-    # bike = db.bike(request.args(0, cast=int))
-    if request.vars.bike_review:
-        session.results= request.vars.bike_review
+    if request.vars.id:
+        session.id = request.vars.id
         redirect(URL('review'))
-    return dict(message=T('Welcome to web2py!'))
+    return dict()
 
 def review():
-    return dict(message=T('Welcome to web2py!'))
+    if request.vars.id:
+        session.id=request.vars.id
+    return dict()
 
 # ---- API (example) -----
 @auth.requires_login()
