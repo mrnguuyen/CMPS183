@@ -14,7 +14,7 @@
     <div id="vue-div" class="display:none">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">BYKR</a>
+            <a class="navbar-brand" href="index">BYKR</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -28,13 +28,61 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Profile</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="search">Bikes</a>
+                    </li>
                 </ul>
-            </div>
-
-            <form action="{{=URL('search')}}">
-              <input name="results" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
-            </form>
+                <form action="{{=URL('search')}}" class="form-inline my-2 my-lg-0">
+                    <input name="results" type="text" class="form-control" placeholder="Search for bike..." aria-label="Search" aria-describedby="basic-addon2">
+                    <button class="btn btn-dark" type="submit">Search</button>
+                </form>
+            </div>e
         </nav>
+        
+        <header>
+            <div class="container text-center">
+                <div id="title"><i><b>Bykr</b></i></div>
+                <p><i><b>We provide the bikes, you provide the reviews</b></i></p>
+                <hr />
+
+                <form action="{{=URL('search')}}">
+                    <div class="input-group mb-3">
+                        <input name="results" type="text" class="form-control" placeholder="Search for bike..." aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-dark" type="submit">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </header>
+        
     </div>
 </div>
+
+<style>
+    p {
+        color: white;
+    }
+
+    hr {
+        border-color: black;
+        color: black;
+        background-color: black;
+        height: 1px;
+    }
+
+    #title {
+        padding-top: 100px;
+        font-size: 100px;
+        color: black;
+    }
+    header {
+        background-image: url("{{=URL('static','images/mountain_bike.jpg')}}");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 1200px;
+    }
+</style>
 <script src="{{=URL('static', 'js/default_index.js')}}"></script>
