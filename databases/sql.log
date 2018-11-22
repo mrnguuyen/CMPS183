@@ -5028,3 +5028,67 @@ success!
 success!
 success!
 success!
+success!
+success!
+success!
+timestamp: 2018-11-15T22:09:19.638134
+CREATE TABLE "review"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "title" CHAR(512),
+    "body" TEXT,
+    "bike_id" INTEGER REFERENCES "bike" ("id") ON DELETE CASCADE  
+);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+timestamp: 2018-11-15T22:44:37.525654
+ALTER TABLE "review" ADD "username" CHAR(512);
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!

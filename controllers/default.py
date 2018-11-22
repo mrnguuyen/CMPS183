@@ -19,6 +19,10 @@ def search():
     return dict(message=T('Welcome to web2py!'))
 
 def review():
+    # result = [] # We will accummulate the result here.
+    # for r in db(db.post.id > 0).select():
+    #     review_list=[]
+    #     replies = db(db.reply.post_id == r.id).select(orderby=db.reply.reply_time)
     return dict(message=T('Welcome to web2py!'))
 
 # ---- API (example) -----
