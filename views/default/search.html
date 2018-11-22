@@ -3,7 +3,7 @@
 {{block head}}
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script>
-    var get_bikes_list_url = "{{=URL('search', 'get_bikes')}}";
+    var get_bikes_list_url = "{{=URL('api', 'get_bikes')}}";
     var result = "{{=request.vars.results}}";
 </script>
 {{end}}
@@ -11,32 +11,51 @@
 <div class="main_content">
 
     <div id="vue-search" class="display:none">
-        <vue-search result="{{=request.vars.results}}"></vue-seach>
+        <vue-search result="{{=request.vars.results}}"></vue-search>
         <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
 
         <!-- First, let's add a form to insert blog posts. -->
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">BYKR</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/bykr">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
-                    </li>
-                </ul>
-            </div>
+                <a class="navbar-brand" href="index">BYKR</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+    
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="index">Home<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="search">Bikes</a>
+                        </li>
+                    </ul>
+                    <form action="{{=URL('search')}}" class="form-inline my-2 my-lg-0">
+                        <input name="results" type="text" class="form-control" placeholder="Search for bike..." aria-label="Search" aria-describedby="basic-addon2">
+                        <button class="btn btn-dark" type="submit">Search</button>
+                    </form>
+                </div>
         </nav>
-        <form action="{{=URL('search')}}">
-          <input name="results" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2">
-        </form>
+        <header>
+            <div class="container">
+                <form action="{{=URL('search')}}">
+                    <div class="input_form">
+                        <div class="input-group mb-3">
+                            <input name="results" type="text" class="form-control" placeholder="Search for bike..." aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-dark" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </header>
+
 
         <div v-if="search_list == 0">{{=request.vars.results}} was not found</div>
 
@@ -51,13 +70,33 @@
                   <p class="card-text">${bike.bike_desc}</p>
                 </div>
               <div class="card-footer">
-                  <a href="review" class="btn btn-primary">Review</a>
+                  <!-- Pass data into review page with the bike id -->
+                  <!-- <a :href="`review/${bike.bike_id}`" class="btn btn-primary">Review</a> UPDATE: DIS IS WRONG --> 
+
+                  <form action="{{=URL('review')}}">
+                        <button name="id" v-model="bike.bike_id" class="btn btn-primary">Review</button>
+                  </form>
              </div>
            </div>
-      </div>
+      </div> <!--end v-for-->
 </div>
 
 
       </div>
 </div>
+
+<style>
+    header {
+        background-image: url("{{=URL('static','images/search_img.jpg')}}");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 450px;
+    }
+
+    .input_form {
+        padding-top: 200px;
+    }
+</style>
 <script src="{{=URL('static', 'js/default_search.js')}}"></script>
