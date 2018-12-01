@@ -5,6 +5,23 @@
 <script>
     var id = "{{=request.vars.id}}";
     var get_bike_url = "{{=URL('api', 'get_bike')}}";
+
+    var add_post_url = "{{=URL('api', 'add_post', user_signature=True)}}";
+    var add_reply_url = "{{=URL('api', 'add_reply', user_signature=True)}}";  
+    var edit_reply_url = "{{=URL('api', 'edit_reply', user_signature=True)}}";  
+    var edit_post_url = "{{=URL('api', 'edit_post', user_signature=True)}}";
+    var get_post_list_url = "{{=URL('api', 'get_post_list')}}";
+    // Like callbacks.
+    var set_like_url = "{{=URL('api', 'set_like', user_signature=True)}}";
+    var get_likers_url = "{{=URL('api', 'get_likers')}}"
+    var get_replies_url = "{{=URL('api', 'get_replies')}}"
+    // Thumbs
+    var set_thumb_url = "{{=URL('api', 'set_thumb', user_signature=True)}}";
+    var get_thumbs_url = "{{=URL('api', 'get_thumbs')}}";
+    // Stars.
+    var set_stars_url = "{{=URL('api', 'set_stars', user_signature=True)}}";
+
+    var is_logged_in = {{='false' if auth.user is None else 'true'}};
 </script>
 {{end}}
 
@@ -49,9 +66,74 @@
         <hr />
         <!--Reivews go down here-->
         <div class="container">
-            Reviews down here
+            
+            <span v-if="is_logged_in">
+                <button v-if="!show_form"
+                        v-on:click="show_add_form">Add Post
+                </button>
+            </span>
+
+            <div v-if="show_form">
+                <div id="add_post" >
+                    <div class="container form_row">
+                        <div class="label quarter">
+                            Title:
+                        </div>
+                        <div class="form threequarters">
+                            <input v-model="form_title" placeholder="Enter the post title"/>
+                        </div>
+                    </div>
+                    <div class="container form_row">
+                        <div class="label quarter">
+                            Content:
+                        </div>
+                        <div class="form threequarters">
+                            <textarea v-model="form_content" placeholder="Enter the content of your post"></textarea>
+                        </div>
+                    </div>
+                    <div class="container form_row"><div class="quarter"></div>
+                        <div class="threequarters">
+                            <div class="submit">
+                                <button id="add-post" v-on:click="add_post(bike._id)">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
+        <!-- Message in case there are no posts. -->
+        <div v-if="post_list.length === 0">There are no posts.</div>
+
+        <!-- We display the posts. -->
+        <div id="post_list">
+            <div class="post_div" v-for="post in post_list">
+                <div v-if="post.is_author">
+                    <i v-on:click="show_edit_form(post._idx)" class="fa fa-pencil-square-o"></i>
+                </div>
+                <div v-if="!post._editing" class="post_title">${post.post_title}</div>
+                <div v-if="post._editing">
+                    <textarea v-model="post.post_title"></textarea> 
+                </div>
+                <div v-if="!post._editing" class="post_content">${post.post_content}</div>
+                <div v-if="post._editing">
+                    <textarea v-model="post.post_content"></textarea> 
+                </div>
+                <button v-if="post._editing" id="edit-post" v-on:click="edit_post(post._idx, post.post_title, post.post_content)">Submit</button>
+                <button v-if="post._editing" v-on:click="cancel_edit(post._idx)">Cancel</button>
+                
+
+
+            </div> 
+        </div>
+    
+
+    
+
+    
     </div>
+
 </div>
 
 <style>
@@ -76,6 +158,10 @@
         color: black;
         background-color: black;
         height: 1px;
+    }
+
+    button {
+        background-color: pink;
     }
 </style>
 
