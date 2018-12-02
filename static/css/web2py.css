@@ -85,7 +85,7 @@ div.w2p_export_menu a, div.w2p_wiki_tags a, div.w2p_cloud a {margin-left:5px; pa
 
 /* Fix */
 #auth_user_remember__row label {display:inline}
-#web2py_user_form td {vertical-align:top}
+#web2py_user_form td {vertical-align:top; margin-top:500px;}
 
 /*********** web2py specific ***********/
 div.w2p_flash {
