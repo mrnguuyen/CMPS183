@@ -1,9 +1,35 @@
 {{extend 'layout.html'}}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{=URL('index')}}">BYKR</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{=URL('index')}}">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{=URL('user/profile')}}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{=URL('search')}}">Bikes</a>
+            </li>
+        </ul>
+        <form action="{{=URL('search')}}" class="form-inline my-2 my-lg-0">
+            <input name="results" type="text" class="form-control" placeholder="Search for bike..." aria-label="Search" aria-describedby="basic-addon2">
+            <button class="btn btn-dark" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
 <body>
   <div id="top_of_form">
     <div class="row"> 
+      
       <div id="web2py_user_form" class="col-lg-6" style="background-color:white; margin: 0 auto 5px auto; box-shadow: 0 0 5px #a1a1a1; border-radius:5px;padding: 20px">
+        <p>If user is authenticated: Add image url upload here, else don't show it</p>
         <h2>
           {{=T('Sign Up') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}
         </h2>
@@ -20,7 +46,14 @@
         {{pass}}
       </div>
     </div>
-  </div>
+    <div id="bottom_of_form">
+      <div class="row"> 
+          <div id="web2py_user_form" class="col-lg-6" style="background-color:white; margin: 0 auto 5px auto; box-shadow: 0 0 5px #a1a1a1; border-radius:5px;padding: 20px">
+            <p>if user is authenticated: show this row, else do not show</p>
+            REVIEWS GO DOWN HERE, you need to create a default_user.js file and use APIs based on user email
+          </div>
+      </div>
+    </div>
 </body>
 
 
@@ -47,6 +80,10 @@
   }
 
   #top_of_form {
-    margin-top: 250px;
+    margin-top: 200px;
+  }
+
+  #bottom_of_form {
+    margin-top: 50px;
   }
 </style>
