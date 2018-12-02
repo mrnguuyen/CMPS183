@@ -71,11 +71,50 @@ def edit_reply():
     db(db.reply.id == reply_id).update(reply_content = reply_contentx)
     return "ok"
 
+# def get_post_list():
+#     results = []
+#     if auth.user is None:
+#         # Not logged in.
+#         rows = db().select(db.post.ALL, orderby=~db.post.post_time)
+#         for row in rows:
+#             results.append(dict(
+#                 id=row.id,
+#                 post_title=row.post_title,
+#                 post_content=row.post_content,
+#                 post_author=row.post_author,
+#                 bike_id=row.bike_id,
+#                 thumb = None,
+#                 is_author = None
+#             ))
+#     else:
+#         # Logged in.
+#         rows = db().select(db.post.ALL, db.thumb.ALL,
+#                             left=[
+#                                 db.thumb.on((db.thumb.post_id == db.post.id) & (db.thumb.user_email == auth.user.email)),
+#                             ],
+#                             orderby=~db.post.post_time)
+#         for row in rows:
+#             results.append(dict(
+#                 id=row.post.id,
+#                 post_title=row.post.post_title,
+#                 post_content=row.post.post_content,
+#                 post_author=row.post.post_author,
+#                 bike_id=row.post.bike_id,
+#                 thumb = None if row.thumb.id is None else row.thumb.thumb_state,
+#                 is_author = True if auth.user.email == row.post.post_author else False 
+#             ))
+#     # For homogeneity, we always return a dictionary.
+#     return response.json(dict(post_list=results))
+
 def get_post_list():
+    bike_id = int(request.vars.bike_id)
     results = []
+    db.post.bike_id = this_bike.id
+
     if auth.user is None:
         # Not logged in.
-        rows = db().select(db.post.ALL, orderby=~db.post.post_time)
+        #rows = db().select(db.post.ALL, orderby=~db.post.post_time)
+        rows = db(db.post.bike_id == this_bike.id).select()
         for row in rows:
             results.append(dict(
                 id=row.id,
