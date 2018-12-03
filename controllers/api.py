@@ -81,6 +81,30 @@ def get_post_list():
     # For homogeneity, we always return a dictionary.
     return response.json(dict(post_list=results))
 
+def get_user_list():
+    user_email = auth.user.email
+    results = []
+    rows = db(db.post.post_author == user_email).select(db.post.ALL, db.bike.ALL,
+                        left=[
+                            db.bike.on((db.bike.id== db.post.bike_id)),
+                        ],
+                        orderby=~db.post.post_time)
+    for row in rows:
+        results.append(dict(
+                id=row.post.id,
+                post_title=row.post.post_title,
+                post_content=row.post.post_content,
+                post_author=row.post.post_author,
+                star_count=row.post.star_count,
+                bike_id=row.post.bike_id,
+                bike_brand = row.bike.Brand,
+                bike_name = row.bike.Name,
+                bike_desc = row.bike.Description,
+                bike_img_url = row.bike.ImageURL,
+                is_author = True if auth.user.email == row.post.post_author else False 
+        ))
+    return response.json(dict(user_review_list=results))
+
 
 @auth.requires_signature()
 def edit_post():
