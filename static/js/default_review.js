@@ -168,6 +168,7 @@ var app = function() {
     };
 
     self.get_replies = function() {
+        console.log("getting replies");
         $.getJSON(get_replies_url, function(data) {
             self.vue.reply_list = data.reply_list;
             self.process_replies();
