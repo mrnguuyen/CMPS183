@@ -309,6 +309,8 @@ var app = function() {
 
     self.get_posts(this.id);
 
+    self.get_replies();
+
     return self;
 };
 
