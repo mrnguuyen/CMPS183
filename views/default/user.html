@@ -1,4 +1,14 @@
 {{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    var get_user_list_url = "{{=URL('api', 'get_user_list')}}";
+    var is_logged_in = {{='false' if auth.user is None else 'true'}};
+</script>
+{{end}}
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="{{=URL('index')}}">BYKR</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -50,33 +60,66 @@
     </div>
 </nav>
 <body>
-  <div id="top_of_form">
-    <div class="row"> 
-      
-      <div id="web2py_user_form" class="col-lg-6" style="background-color:white; margin: 0 auto 5px auto; box-shadow: 0 0 5px #a1a1a1; border-radius:5px;padding: 20px">
-        <p>If user is authenticated: Add image url upload here, else don't show it</p>
-        <h2>
-          {{=T('Sign Up') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}
-        </h2>
-        {{=form}}
-        {{if request.args(0)=='login' and not 'register' in auth.settings.actions_disabled:}}
-        <a href="{{=URL('user/register')}}">{{=T('Register')}}</a>
-        <br/>
-        {{pass}}
-        {{if request.args(0)=='login' and not 'retrieve_password' in auth.settings.actions_disabled:}}
-        <a href="{{=URL('user/retrieve_password')}}">{{=T('Lost your password?')}}</a>
-        {{pass}}
-        {{if request.args(0)=='register':}}
-        <a href="{{=URL('user/login')}}">{{=T('Login')}}</a>
-        {{pass}}
-      </div>
-    </div>
-    <div id="bottom_of_form">
-      <div class="row"> 
+  <div id="main_content">
+    <div id="vue-profile">
+      <div id="top_of_form">
+        <div class="row"> 
+          
           <div id="web2py_user_form" class="col-lg-6" style="background-color:white; margin: 0 auto 5px auto; box-shadow: 0 0 5px #a1a1a1; border-radius:5px;padding: 20px">
-            <p>if user is authenticated: show this row, else do not show</p>
-            REVIEWS GO DOWN HERE, you need to create a default_user.js file and use APIs based on user email
+            <h2>
+              {{=T('Sign Up') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}
+            </h2>
+            {{=form}}
+            {{if request.args(0)=='login' and not 'register' in auth.settings.actions_disabled:}}
+            <a href="{{=URL('user/register')}}">{{=T('Register')}}</a>
+            <br/>
+            {{pass}}
+            {{if request.args(0)=='login' and not 'retrieve_password' in auth.settings.actions_disabled:}}
+            <a href="{{=URL('user/retrieve_password')}}">{{=T('Lost your password?')}}</a>
+            {{pass}}
+            {{if request.args(0)=='register':}}
+            <a href="{{=URL('user/login')}}">{{=T('Login')}}</a>
+            {{pass}}
           </div>
+        </div>
+        <div v-if="is_logged_in">
+          <div id="bottom_of_form">
+            <div class="row"> 
+                <div id="web2py_user_form" class="col-lg-6" style="background-color:white; margin: 0 auto 5px auto; box-shadow: 0 0 5px #a1a1a1; border-radius:5px;padding: 20px">
+                  <div id="user_review_list">
+                    <h1 style="text-align: center;">User Reviews</h1>
+                    <hr />
+                    <div class="card-deck">
+                      <div class="review_div" v-for="review in user_review_list">
+                          <!--<h1>${review.bike_brand}</h1>
+                          <h1>${review.bike_name}</h1>
+                          <img v-bind:src="review.bike_img_url">
+                          <p>${review.post_author}</p>
+                          <p>${review.post_title}</p>
+                          <p>${review.post_content}</p>-->
+                          <div class="card" style="width: 20rem;">
+                            <img class="card-img-top" v-bind:src="review.bike_img_url" alt="Card image cap">
+                            <div class="card-body">
+                              <h5 class="card-title">${review.bike_brand}</h5>
+                              <h5 class="card-title">${review.bike_name}</h5>
+                              <hr />
+                              <h3 style="text-align: center;">Review</h3>
+                              <hr style="width: 110px;" />
+                              <p class="card-text"><b>Author: </b>${review.post_author}</p>
+                              <p class="card-text"><b>Title: </b>${review.post_title}</p>
+                              <p class="card-text"><b>Content: </b>${review.post_content}</p>
+                              <form action="{{=URL('review')}}">
+                                    <button name="id" v-model="review.bike_id" class="btn btn-dark">Go to Bike</button>
+                              </form>
+                            </div>
+                          </div>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 </body>
@@ -93,6 +136,9 @@
 {{pass}}
 </script>
 {{end page_js}}
+
+<script src="{{=URL('static', 'js/default_profile.js')}}"></script>
+
 
 <style>
   body {
