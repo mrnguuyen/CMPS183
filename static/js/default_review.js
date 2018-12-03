@@ -34,15 +34,15 @@ var app = function() {
 
         // We disable the button, to prevent double submission.
         $.web2py.disableElement($("#add-post"));
-        var sent_title = self.vue.form_title; // Makes a copy 
-        var sent_content = self.vue.form_content; // 
+        var sent_title = self.vue.form_title; // Makes a copy
+        var sent_content = self.vue.form_content; //
         $.post(add_post_url,
             // Data we are sending.
             {
                 bike_id: id,
                 post_title: self.vue.form_title,
-                post_content: self.vue.form_content
-
+                post_content: self.vue.form_content,
+                star_count: self.vue.star_count
             },
             // What do we do when the post succeeds?
             function (data) {
@@ -51,10 +51,11 @@ var app = function() {
                 // Clears the form.
                 self.vue.form_title = "";
                 self.vue.form_content = "";
-                // Adds the post to the list of posts. 
+                // Adds the post to the list of posts.
                 var new_post = {
                     bike_id: id,
                     id: data.post_id,
+                    star_count: self.vue.star_count,
                     post_title: sent_title,
                     post_content: sent_content,
                     is_author: true
@@ -77,31 +78,20 @@ var app = function() {
                 // I am assuming here that the server gives me a nice list
                 // of posts, all ready for display.
                 self.vue.post_list = data.post_list;
-                
+
                 console.log(self.vue.post_list);
                 // Post-processing.
                 self.process_posts();
                 //return data.post_list;
             }
         );
-        
+
     };
 
     self.process_posts = function() {
-        // This function is used to post-process posts, after the list has been modified
-        // or after we have gotten new posts. 
-        // We add the _idx attribute to the posts. 
         enumerate(self.vue.post_list);
-        // We initialize the smile status to match the like. 
 
         self.vue.post_list.map(function (e) {
-            // I need to use Vue.set here, because I am adding a new watched attribute
-            // to an object.  See https://vuejs.org/v2/guide/list.html#Object-Change-Detection-Caveats
-            // The code below is commented out, as we don't have smiles any more. 
-            // Replace it with the appropriate code for thumbs. 
-            // // Did I like it? 
-            // // If I do e._smile = e.like, then Vue won't see the changes to e._smile . 
-            // Vue.set(e, '_smile', e.like); 
 
             Vue.set(e, '_thumb_up', e.thumb == 'u' ? true : false);
             Vue.set(e, '_thumb_down', e.thumb == 'd' ? true : false);
@@ -242,6 +232,30 @@ var app = function() {
         console.log("show_add_reply_form " + self.vue.show_reply_form );
     }
 
+    self.show_star_mouseover = function(index) {
+
+        for(i = 1; i <= 5; i++)
+        {
+            Vue.set(self.vue.show_star_arr, i, i <= index ? true : false);
+        }
+    }
+
+    self.show_star_mouseout = function(index) {
+        if(self.vue.star_count > 0)
+        {
+            self.show_star_mouseover(self.vue.star_count);
+            return;
+        }
+        for(i = 1; i <= index; i++)
+        {
+          Vue.set(self.vue.show_star_arr, i, false);
+        }
+    }
+
+    self.show_star_click = function(index) {
+        self.vue.star_count = index;
+    }
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-review",
@@ -258,7 +272,9 @@ var app = function() {
             thumb_list: [],
             reply_list: [],
             show_form: false,
-            show_reply_form: false
+            show_reply_form: false,
+            show_star_arr: [false, false, false, false, false, false], // 6 of them for indexing purposes, 0 is not used at all
+            star_count: 0
         },
         methods: {
             get_bike: self.get_bike,
@@ -269,7 +285,7 @@ var app = function() {
             show_edit_form: self.show_edit_form,
             cancel_edit: self.cancel_edit,
             add_reply: self.add_reply,
-            
+
             get_reply: self.get_reply,
             get_replies: self.get_replies,
             show_add_reply_form: self.show_add_reply_form,
@@ -277,6 +293,9 @@ var app = function() {
             show_reply: self.show_reply,
             hide_reply: self.hide_reply,
             edit_reply: self.edit_reply,
+            show_star_mouseover: self.show_star_mouseover,
+            show_star_mouseout: self.show_star_mouseout,
+            show_star_click: self.show_star_click
         }
     });
 

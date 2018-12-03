@@ -30,6 +30,7 @@ db.define_table('post',
                 Field('post_content', 'text'),
                 Field('post_time', 'datetime', default=get_current_time()),
                 Field('bike_id', 'reference bike'),
+                Field('star_count')
                 )
 
 db.define_table('reply',
@@ -45,5 +46,3 @@ db.define_table('thumb',
                 Field('post_id', 'reference post'), # The thumbed post
                 Field('thumb_state'), # This can be 'u' for up or 'd' for down, or None for... None.
                 )
-
-
