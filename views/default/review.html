@@ -20,7 +20,7 @@
 <div class="main_content">
     <div id="vue-review">
         <vue-review id="{{=request.vars.id}}"></vue-review>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <a class="navbar-brand" href="index">BYKR</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,7 +81,6 @@
 
         <!--Reivews go down here-->
         <div class="container">
-            
             <span v-if="is_logged_in">
                 <button type="button" 
                         class="btn btn-secondary btn-lg btn-block" 
@@ -100,7 +99,7 @@
 
                     <div class="container form_row">
                         <label for="Content">Content</label>
-                        <input type="text" class="form-control" id="InputContent" aria-describedby="reviewHelp" v-model="form_content" placeholder="Enter Review Content">
+                        <textarea class="form-control" id="InputContent" aria-describedby="With Textarea" v-model="form_content" placeholder="Enter Review Content"></textarea>
                         <small id="contentHelp" class="form-text text-muted">Your review</small>
                     </div>
 
@@ -152,9 +151,17 @@
                             <div v-if="post.is_author">
                                 <i v-on:click="show_edit_form(post._idx)" class="fa fa-pencil-square-o"></i>
                             </div>
-
+                            <span v-for="n in 5">
+                                <span v-if="n <= post.star_count" class="fa fa-star"></span>
+                                <span v-else>
+                                    <i class="fa fa-star-o"></i>
+                                </span>
+                            </span>
+                            <div class="post_author">
+                                <h5 class="card-title"><b>Author: </b>${post.post_author}</h5>
+                            </div>
                             <div v-if="!post._editing" class="post_title">
-                                <h5 class="card-title">${post.post_title}</h5>
+                                <h5 class="card-title"><b>Title: </b>${post.post_title}</h5>
                             </div>
                             <div v-if="post._editing">
                                 <textarea v-model="post.post_title"></textarea> 
@@ -162,24 +169,20 @@
 
                             <div v-if="!post._editing" class="post_title">
                                 
-                                    <p class="card-text" style="text-align: left">${post.post_content}</p>
-                                
+                                    <p class="card-text" style="text-align: left"><b>Content: </b>${post.post_content}</p>
+                                    
                             </div>
                             <div v-if="post._editing">
                                 <textarea v-model="post.post_content"></textarea> 
                             </div>
                             
-                            <span v-for="n in 5">
-                                <span v-if="n <= post.star_count" class="fa fa-star"></span>
-                                <span v-else>
-                                    <i class="fa fa-star-o"></i>
-                                </span>
-                            </span>
+                            
 
                             <button v-if="post._editing" id="edit-post" v-on:click="edit_post(post._idx, post.post_title, post.post_content)" class="btn btn-dark">Submit</button>
                             <button v-if="post._editing" v-on:click="cancel_edit(post._idx)" class="btn btn-dark">Cancel</button>
 
-
+                            <br />
+                            <br />
 
                             <div class="attributes">
                                 <button v-on:click="show_reply(post._idx)" class="btn btn-dark">Reply / Show Replies</button>
@@ -256,6 +259,12 @@
         background-color: black;
         height: 1px;
     }
+
+    #InputContent {
+        height: 300px;
+    }
+
+
 </style>
 
 <script src="{{=URL('static', 'js/default_review.js')}}"></script>

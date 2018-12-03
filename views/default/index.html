@@ -13,7 +13,7 @@
 
     <div id="vue-div" class="display:none">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="index">BYKR</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,9 +64,8 @@
         <header>
             <div class="container text-center">
                 <div id="title"><i><b>Bykr</b></i></div>
-                <p><i><b>We provide the bikes, you provide the reviews</b></i></p>
                 <hr />
-
+                <br />
                 <form action="{{=URL('search')}}">
                     <div class="input-group mb-3">
                         <input name="results" type="text" class="form-control" placeholder="Search for bike..." aria-label="Search" aria-describedby="basic-addon2">
@@ -75,6 +74,39 @@
                         </div>
                     </div>
                 </form>
+            </div>
+
+            <br />
+            <br />
+            <br />
+            <br />
+            
+
+            <div class="container text-center">
+                    <table class="table table-dark">
+                        <thead>
+                            <tr>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=cannondale')}}">Cannondale</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=ibis')}}">Ibis</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=diamondback')}}">DiamondBack</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=santacruz')}}">Santa Cruz</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=fuji')}}">Fuji</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=nishiki')}}">Nishiki</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=trek')}}">Trek</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=specialized')}}">Specialized</a></th>
+                            </tr>
+                            <tr>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=ghost')}}">Ghost</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=salsa')}}">Salsa</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=scott')}}">Scott</a></th>
+                            <th scope="col"><a class="tablefont" name="results" href="{{=URL('search?results=BMC')}}">BMC</a></th>
+                            </tr>
+                        </tbody>
+                        </table>
             </div>
         </header>
         
@@ -105,6 +137,19 @@
         background-size: cover;
         background-attachment: fixed;
         height: 1200px;
+    }
+
+    .tablefont {
+        color:white;
+        font-size: 20px;
+    }
+
+    a:hover {
+        color: white;
+    }
+
+    .table-dark {
+        opacity: 0.9;
     }
 </style>
 <script src="{{=URL('static', 'js/default_index.js')}}"></script>
