@@ -81,33 +81,29 @@
 
         <!--Reivews go down here-->
         <div class="container">
-            Reviews down here<br>
-
-            <!--Need log in check-->
+            
             <span v-if="is_logged_in">
-                <button v-if="!show_form"
-                        v-on:click="show_add_form">Add Post
+                <button type="button" 
+                        class="btn btn-secondary btn-lg btn-block" 
+                        v-if="!show_form"
+                        v-on:click="show_add_form">Add Review
                 </button>
             </span>
 
             <div v-if="show_form">
                 <div id="add_post" >
                     <div class="container form_row">
-                        <div class="label quarter">
-                            Title:
-                        </div>
-                        <div class="form threequarters">
-                            <input v-model="form_title" placeholder="Enter the post title"/>
-                        </div>
+                        <label for="Title">Title</label>
+                        <input type="text" class="form-control" id="InputTitle" aria-describedby="reviewHelp" v-model="form_title" placeholder="Enter Review Title">
+                        <small id="titleHelp" class="form-text text-muted">Topic of your review</small>
                     </div>
+
                     <div class="container form_row">
-                        <div class="label quarter">
-                            Content:
-                        </div>
-                        <div class="form threequarters">
-                            <textarea v-model="form_content" placeholder="Enter the content of your post"></textarea>
-                        </div>
+                        <label for="Content">Content</label>
+                        <input type="text" class="form-control" id="InputContent" aria-describedby="reviewHelp" v-model="form_content" placeholder="Enter Review Content">
+                        <small id="contentHelp" class="form-text text-muted">Your review</small>
                     </div>
+
                     <div class="container form_row">
                         <div class="label quarter">
                             Rating:
@@ -136,7 +132,7 @@
                     <div class="container form_row"><div class="quarter"></div>
                         <div class="threequarters">
                             <div class="submit">
-                                <button id="add-post" v-on:click="add_post(bike._id)">Submit</button>
+                                <button type="button" class="btn btn-secondary btn-lg btn-block" id="add-post" v-on:click="add_post(bike._id)">Submit</button>
                             </div>
                         </div>
                     </div>
@@ -148,75 +144,82 @@
             <!-- We display the posts. -->
             <div id="post_list">
                 <div class="post_div" v-for="post in post_list">
-                    <div v-if="post.is_author">
-                        <i v-on:click="show_edit_form(post._idx)" class="fa fa-pencil-square-o"></i>
-                    </div>
-                    <div v-if="!post._editing" class="post_title">${post.post_title}</div>
-                    <div v-if="post._editing">
-                        <textarea v-model="post.post_title"></textarea>
-                    </div>
-                    <div v-if="!post._editing" class="post_content">${post.post_content}</div>
-                    <div v-if="post._editing">
-                        <textarea v-model="post.post_content"></textarea>
-                    </div>
-                    <span v-for="n in 5">
-                      <span v-if="n <= post.star_count" class="fa fa-star"></span>
-                      <span v-else>
-                        <i class="fa fa-star-o"></i>
-                      </span>
-                    </span>
-                    <button v-if="post._editing" id="edit-post" v-on:click="edit_post(post._idx, post.post_title, post.post_content)">Submit</button>
-                    <button v-if="post._editing" v-on:click="cancel_edit(post._idx)">Cancel</button>
 
-                    <div class="card" style="width: 50rem;">
-                        <img class="card-img-top" src="bike._img" alt="Card image cap">
+                    <div class="card" style="width: 100%">
+                        <img class="pic" v-bind:src="bike._img" alt="Card image cap" width="25%">
                         <div class="card-body">
-                            <h5 class="card-title">${post.post_title}</h5>
-                            <p class="card-text">${post.post_content}</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
 
-                    <div class="attributes">
-                        <button v-on:click="show_reply(post._idx)">Reply / Show Replies</button>
-                        <button v-if="post._show_reply" v-on:click="hide_reply(post._idx)">Hide Replies</button>
-                        <div v-if="post._show_reply" class="replies">
-                            <br />
-                            <span v-if="is_logged_in">
-                            <button v-if="!post._show_reply_form" v-on:click="show_add_reply_form(post._idx)">Add Reply</button>
-                            </span>
-                            <div v-if="post._show_reply_form" class="container form_row">
-                                    Content of reply:
-                                <div class="form quarter">
-                                    <textarea v-model="reply_content" placeholder="Enter the content of your reply"></textarea>
-                                </div>
-                                </div>
-                                <div v-if="post._show_reply_form" class="container form_row"><div class="quarter"></div>
-                                <div class="quarter">
-                                    <div class="submit">
-                                    <button id="add-reply" v-on:click="add_reply(post._idx)">Submit</button> <!--add v-on:click here-->
+                            <div v-if="post.is_author">
+                                <i v-on:click="show_edit_form(post._idx)" class="fa fa-pencil-square-o"></i>
+                            </div>
+
+                            <div v-if="!post._editing" class="post_title">
+                                <h5 class="card-title">${post.post_title}</h5>
+                            </div>
+                            <div v-if="post._editing">
+                                <textarea v-model="post.post_title"></textarea> 
+                            </div>
+
+                            <div v-if="!post._editing" class="post_title">
+                                
+                                    <p class="card-text" style="text-align: left">${post.post_content}</p>
+                                
+                            </div>
+                            <div v-if="post._editing">
+                                <textarea v-model="post.post_content"></textarea> 
+                            </div>
+                            
+                            <button v-if="post._editing" id="edit-post" v-on:click="edit_post(post._idx, post.post_title, post.post_content)" class="btn btn-dark">Submit</button>
+                            <button v-if="post._editing" v-on:click="cancel_edit(post._idx)" class="btn btn-dark">Cancel</button>
+
+
+
+                            <div class="attributes">
+                                <button v-on:click="show_reply(post._idx)" class="btn btn-dark">Reply / Show Replies</button>
+                                <button v-if="post._show_reply" v-on:click="hide_reply(post._idx)" class="btn btn-dark">Hide Replies</button>
+                                <div v-if="post._show_reply" class="replies">
+                                    <br />
+                                    <span v-if="is_logged_in">
+                                    <button v-if="!post._show_reply_form" v-on:click="show_add_reply_form(post._idx)">Add Reply</button>
+                                    </span>
+                                    <div v-if="post._show_reply_form" class="container form_row">
+                                            Content of reply:
+                                        <div class="form quarter">
+                                            <textarea v-model="reply_content" placeholder="Enter the content of your reply"></textarea>
+                                        </div>
+                                        </div>
+                                        <div v-if="post._show_reply_form" class="container form_row"><div class="quarter"></div>
+                                        <div class="quarter">
+                                            <div class="submit">
+                                            <button id="add-reply" v-on:click="add_reply(post._idx)">Submit</button> <!--add v-on:click here-->
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <div class="post_div" v-for="reply in post._reply_list">
+                                    <div v-if="reply.is_author">
+                                        <i v-on:click="show_edit_reply_form(reply._idx)" class="fa fa-pencil-square-o"></i>
+                                    </div>
+                                    <div>${reply.reply_author}</div> 
+                                    <div v-if="!reply._editing">${reply.reply_content}</div>
+                                    <div v-if="reply._editing">
+                                        <textarea v-model="reply.reply_content"></textarea> 
+                                    </div>
+                                    <button v-if="reply._editing" id="edit-reply" v-on:click="edit_reply(reply._idx, reply.reply_content)">Submit</button>
+                                    <!--<button v-if="reply._editing" v-on:click="cancel_edit(post._idx)">Cancel</button>-->
                                     </div>
                                 </div>
-                                </div>
-                            <div class="post_div" v-for="reply in post._reply_list">
-                            <div v-if="reply.is_author">
-                                <i v-on:click="show_edit_reply_form(reply._idx)" class="fa fa-pencil-square-o"></i>
                             </div>
-                            <div>${reply.reply_author}</div>
-                            <div v-if="!reply._editing">${reply.reply_content}</div>
-                            <div v-if="reply._editing">
-                                <textarea v-model="reply.reply_content"></textarea>
-                            </div>
-                            <button v-if="reply._editing" id="edit-reply" v-on:click="edit_reply(reply._idx, reply.reply_content)">Submit</button>
-                            <!--<button v-if="reply._editing" v-on:click="cancel_edit(post._idx)">Cancel</button>-->
-                            </div>
+
+
+
                         </div>
                     </div>
+                    
+                    
 
 
-                </div>
+                </div> 
             </div>
-
 
 
         </div>
