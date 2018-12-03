@@ -34,6 +34,7 @@ def add_post():
         bike_id = int(request.vars.bike_id),
         post_title=request.vars.post_title,
         post_content=request.vars.post_content,
+        star_count=request.vars.star_count
     )
     # We return the id of the new post, so we can insert it along all the others.
     return response.json(dict(post_id=post_id))
@@ -53,6 +54,7 @@ def get_post_list():
                 post_content=row.post_content,
                 post_author=row.post_author,
                 bike_id=row.bike_id,
+                star_count=row.star_count,
                 thumb = None,
                 is_author = None
             ))
@@ -70,8 +72,9 @@ def get_post_list():
                 post_content=row.post.post_content,
                 post_author=row.post.post_author,
                 bike_id=row.post.bike_id,
+                star_count=row.post.star_count,
                 thumb = None if row.thumb.id is None else row.thumb.thumb_state,
-                is_author = True if auth.user.email == row.post.post_author else False 
+                is_author = True if auth.user.email == row.post.post_author else False
             ))
     # For homogeneity, we always return a dictionary.
     return response.json(dict(post_list=results))
@@ -152,6 +155,6 @@ def get_replies():
                 reply_author=row.reply_author,
                 post_id=row.post_id,
                 reply_content=row.reply_content,
-                is_author = True if auth.user.email == row.reply_author else False 
+                is_author = True if auth.user.email == row.reply_author else False
             ))
     return response.json(dict(reply_list=results))

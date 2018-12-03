@@ -11,8 +11,8 @@
     var edit_post_url = "{{=URL('api', 'edit_post', user_signature=True)}}";
     var is_logged_in = {{='false' if auth.user is None else 'true'}};
 
-    var add_reply_url = "{{=URL('api', 'add_reply', user_signature=True)}}";  
-    var edit_reply_url = "{{=URL('api', 'edit_reply', user_signature=True)}}";  
+    var add_reply_url = "{{=URL('api', 'add_reply', user_signature=True)}}";
+    var edit_reply_url = "{{=URL('api', 'edit_reply', user_signature=True)}}";
     var get_replies_url = "{{=URL('api', 'get_replies')}}"
 </script>
 {{end}}
@@ -26,7 +26,7 @@
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-    
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item active">
@@ -78,7 +78,7 @@
             </div>
         </div>
         <hr />
-        
+
         <!--Reivews go down here-->
         <div class="container">
             Reviews down here<br>
@@ -108,6 +108,31 @@
                             <textarea v-model="form_content" placeholder="Enter the content of your post"></textarea>
                         </div>
                     </div>
+                    <div class="container form_row">
+                        <div class="label quarter">
+                            Rating:
+                            <span v-on:mouseover="show_star_mouseover(1)" v-on:mouseout="show_star_mouseout(1)" v-on:click="show_star_click(1)">
+                              <i v-if="show_star_arr[1]" class="fa fa-star"></i>
+                              <i v-if="!show_star_arr[1]" class="fa fa-star-o"></i>
+                            </span>
+                            <span v-on:mouseover="show_star_mouseover(2)" v-on:mouseout="show_star_mouseout(2)" v-on:click="show_star_click(2)">
+                              <i v-if="show_star_arr[2]" class="fa fa-star"></i>
+                              <i v-if="!show_star_arr[2]" class="fa fa-star-o"></i>
+                            </span>
+                            <span v-on:mouseover="show_star_mouseover(3)" v-on:mouseout="show_star_mouseout(3)" v-on:click="show_star_click(3)">
+                              <i v-if="show_star_arr[3]" class="fa fa-star"></i>
+                              <i v-if="!show_star_arr[3]" class="fa fa-star-o"></i>
+                            </span>
+                            <span v-on:mouseover="show_star_mouseover(4)" v-on:mouseout="show_star_mouseout(4)" v-on:click="show_star_click(4)">
+                              <i v-if="show_star_arr[4]" class="fa fa-star"></i>
+                              <i v-if="!show_star_arr[4]" class="fa fa-star-o"></i>
+                            </span>
+                            <span v-on:mouseover="show_star_mouseover(5)" v-on:mouseout="show_star_mouseout(5)" v-on:click="show_star_click(5)">
+                              <i v-if="show_star_arr[5]" class="fa fa-star"></i>
+                              <i v-if="!show_star_arr[5]" class="fa fa-star-o"></i>
+                            </span>
+                        </div>
+                    </div>
                     <div class="container form_row"><div class="quarter"></div>
                         <div class="threequarters">
                             <div class="submit">
@@ -128,12 +153,18 @@
                     </div>
                     <div v-if="!post._editing" class="post_title">${post.post_title}</div>
                     <div v-if="post._editing">
-                        <textarea v-model="post.post_title"></textarea> 
+                        <textarea v-model="post.post_title"></textarea>
                     </div>
                     <div v-if="!post._editing" class="post_content">${post.post_content}</div>
                     <div v-if="post._editing">
-                        <textarea v-model="post.post_content"></textarea> 
+                        <textarea v-model="post.post_content"></textarea>
                     </div>
+                    <span v-for="n in 5">
+                      <span v-if="n <= post.star_count" class="fa fa-star"></span>
+                      <span v-else>
+                        <i class="fa fa-star-o"></i>
+                      </span>
+                    </span>
                     <button v-if="post._editing" id="edit-post" v-on:click="edit_post(post._idx, post.post_title, post.post_content)">Submit</button>
                     <button v-if="post._editing" v-on:click="cancel_edit(post._idx)">Cancel</button>
 
@@ -145,7 +176,7 @@
                             <a href="#" class="btn btn-primary">Go somewhere</a>
                         </div>
                     </div>
-                    
+
                     <div class="attributes">
                         <button v-on:click="show_reply(post._idx)">Reply / Show Replies</button>
                         <button v-if="post._show_reply" v-on:click="hide_reply(post._idx)">Hide Replies</button>
@@ -171,10 +202,10 @@
                             <div v-if="reply.is_author">
                                 <i v-on:click="show_edit_reply_form(reply._idx)" class="fa fa-pencil-square-o"></i>
                             </div>
-                            <div>${reply.reply_author}</div> 
+                            <div>${reply.reply_author}</div>
                             <div v-if="!reply._editing">${reply.reply_content}</div>
                             <div v-if="reply._editing">
-                                <textarea v-model="reply.reply_content"></textarea> 
+                                <textarea v-model="reply.reply_content"></textarea>
                             </div>
                             <button v-if="reply._editing" id="edit-reply" v-on:click="edit_reply(reply._idx, reply.reply_content)">Submit</button>
                             <!--<button v-if="reply._editing" v-on:click="cancel_edit(post._idx)">Cancel</button>-->
@@ -183,7 +214,7 @@
                     </div>
 
 
-                </div> 
+                </div>
             </div>
 
 
