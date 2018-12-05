@@ -106,6 +106,8 @@ def get_user_list():
     return response.json(dict(user_review_list=results))
 
 
+
+
 @auth.requires_signature()
 def edit_post():
     post_id = int(request.vars.post_id)
@@ -160,3 +162,57 @@ def get_replies():
                 is_author = True if auth.user.email == row.reply_author else False
             ))
     return response.json(dict(reply_list=results))
+
+
+
+
+
+def post_image():
+    image_str = request.vars.image_url
+    # blog_post_id = int(request.vars.blog_post_id)
+    current_user_email = get_user_email()
+    # Normally, here I would have to check that the user can store the 
+    # image to the blog post, etc etc.
+    db.my_images.update_or_insert(
+        (db.my_images.user_email == current_user_email),
+        # blog_post_id = blog_post_id,
+        image_str = image_str,
+        user_email = get_user_email()
+    )
+    return "ok"
+
+# def get_image():
+#     # blog_post_id = int(request.vars.blog_post_id)
+#     current_user_email = get_user_email() #SHOULD ADD IN ORDER TO GRAB CORRECT IMAGE FOR PROFILE PIC
+#     r = db(db.my_images.user_email == current_user_email).select().first()
+#     image_str = None
+#     if r is not None:
+#         image_str = r.image_str
+#     return response.json(dict(image_str = image_str))
+
+
+#THIS IS A TEST FUNCTION
+def get_image():
+    current_user_email=get_user_email()
+    results = []
+    if auth.user is None:
+    # Not logged in.
+        rows = db().select(db.my_images.ALL)
+        for row in rows:
+            results.append(dict(
+                id=row.id,
+                user_email=row.user_email,
+                is_author = None
+            ))
+    else:
+        rows = db(db.my_images.user_email == current_user_email).select(db.my_images.ALL)
+        for row in rows:
+            results.append(dict(
+                id=row.id,
+                user_email=row.user_email,
+                image_str=row.image_str,
+                is_author = True if auth.user.email == row.user_email else False
+            ))
+    return response.json(dict(image_list=results))
+
+    

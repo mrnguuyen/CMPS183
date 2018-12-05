@@ -40,9 +40,16 @@ db.define_table('reply',
                 Field('reply_time', 'datetime', default=get_current_time()),
                 )
 
+db.define_table('my_images',
+    Field('image_str'), #, 'text'
+    # Field('blog_post_id', 'integer'), # Should be a reference to a blog post I guess.
+     Field('user_email', default=get_user_email())
+)
+
 # Thumbs
 db.define_table('thumb',
                 Field('user_email'), # The user who thumbed, easier to just write the email here.
                 Field('post_id', 'reference post'), # The thumbed post
                 Field('thumb_state'), # This can be 'u' for up or 'd' for down, or None for... None.
                 )
+
